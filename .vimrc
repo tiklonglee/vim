@@ -131,6 +131,9 @@ Plug 'junegunn/fzf.vim'
 " Syntax Highlight
 Plug 'bfrg/vim-cpp-modern'               " cpp highlight
 
+" Folds
+Plug 'Konfekt/FastFold'                  " compute folds in a better way
+
 call plug#end()
 
 "----------------------------------------------------------------------
@@ -222,6 +225,18 @@ noremap \ :execute 'FGrep<space>'<cr>
 
 command! -bang -nargs=* GGrep call ListGGrepFiles(expand('<cword>'), <bang>0)
 noremap \\ :execute 'GGrep<space>'<cr>
+
+"----------------------------------------------------------------------
+" Fast Fold
+"----------------------------------------------------------------------
+
+" Set fold method
+autocmd FileType c,cpp  setlocal foldmethod=syntax
+autocmd FileType python setlocal foldmethod=indent
+
+" Map space to fold / unfold
+nnoremap <space> za
+nnoremap <S-space> zA
 
 "----------------------------------------------------------------------
 " Vim Plugin Configuration End
