@@ -121,6 +121,9 @@ call plug#begin('~/.vim/bundle')
 Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'rose-pine/vim', { 'as': 'rose-pine' }
 
+" LSP
+Plug 'dense-analysis/ale'                " LSP client + linter
+
 call plug#end()
 
 "----------------------------------------------------------------------
@@ -133,6 +136,30 @@ let &t_ZR=""
 
 " change colorscheme
 colorscheme rosepine
+
+"----------------------------------------------------------------------
+" ALE
+"----------------------------------------------------------------------
+
+" auto completion
+let g:ale_completion_enabled = 1
+set omnifunc=ale#completion#OmniFunc
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+" LSP actions
+nnoremap K :ALEHover<cr>
+nnoremap gd :ALEGoToDefinition<cr>
+nnoremap gr :ALEFindReferences<cr>
+nnoremap <leader>rn :ALERename<cr>
+nnoremap <leader>ca :ALECodeAction<cr>
+
+" navigate between errors
+nnoremap [d <Plug>(ale_previous_wrap)
+nnoremap ]d <Plug>(ale_next_wrap)
+
+" c++ hack fix
+let g:ale_cpp_cc_options = '-std=c++20 -Wall -Wextra'
 
 "----------------------------------------------------------------------
 " Vim Plugin Configuration End
