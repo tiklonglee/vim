@@ -127,6 +127,9 @@ Plug 'dense-analysis/ale'                " LSP client + linter
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+" Syntax Highlight
+Plug 'bfrg/vim-cpp-modern'               " cpp highlight
+
 call plug#end()
 
 "----------------------------------------------------------------------
