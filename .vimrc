@@ -124,6 +124,10 @@ Plug 'rose-pine/vim', { 'as': 'rose-pine' }
 " LSP
 Plug 'dense-analysis/ale'                " LSP client + linter
 
+" Fuzzy Finder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 call plug#end()
 
 "----------------------------------------------------------------------
@@ -160,6 +164,61 @@ nnoremap ]d <Plug>(ale_next_wrap)
 
 " c++ hack fix
 let g:ale_cpp_cc_options = '-std=c++20 -Wall -Wextra'
+
+"----------------------------------------------------------------------
+" FZF
+"----------------------------------------------------------------------
+
+let g:fzf_action = {
+    \ 'ctrl-t': 'tab drop',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit',
+    \ }
+let g:fzf_buffers_jump = 1  " Jump to the existing window if possible
+
+function! GetGitRoot()
+    let top_level = systemlist('git rev-parse --show-toplevel')[0]
+    return v:shell_error ? '' : top_level
+endfunction
+
+function! ListCurrentFiles()
+    let top_level = GetGitRoot()
+    if empty(top_level)  " this isn't a git repo
+        return fzf#vim#files(getcwd())
+    else
+        return fzf#vim#gitfiles('--recurse-submodules')
+    endif
+endfunction
+
+function! ListGGrepFiles(pattern, bang)
+    let top_level = GetGitRoot()
+    if executable('rg')
+        if empty(top_level)
+            return fzf#vim#grep2('rg --column --line-number --no-heading --color=always --smart-case -- ', a:pattern,
+                        \       fzf#vim#with_preview({'dir': getcwd(), 'options': ['--delimiter', '/', '--with-nth', '-2..']}), a:bang)
+        else
+            return fzf#vim#grep2('rg --column --line-number --no-heading --color=always --smart-case -- ', a:pattern,
+                        \       fzf#vim#with_preview({'dir': top_level, 'options': ['--delimiter', '/', '--with-nth', '-2..']}), a:bang)
+        endif
+    else
+        if empty(top_level)
+            return fzf#vim#grep2('fgrep -r --line-number --color=always --ignore-case -- ', a:pattern,
+                        \       fzf#vim#with_preview({'dir': getcwd(), 'options': ['--delimiter', '/', '--with-nth', '-2..']}), a:bang)
+        else
+            return fzf#vim#grep2('git grep --column --line-number --color=always --ignore-case -- ', a:pattern,
+                        \       fzf#vim#with_preview({'dir': top_level, 'options': ['--delimiter', '/', '--with-nth', '-2..']}), a:bang)
+        endif
+    endif
+endfunction
+
+command! -bang -nargs=? -complete=dir LFiles call ListCurrentFiles()
+noremap <C-P> :execute 'LFiles'<cr>
+
+command! -bang -nargs=* FGrep call ListGGrepFiles(<q-args>, <bang>0)
+noremap \ :execute 'FGrep<space>'<cr>
+
+command! -bang -nargs=* GGrep call ListGGrepFiles(expand('<cword>'), <bang>0)
+noremap \\ :execute 'GGrep<space>'<cr>
 
 "----------------------------------------------------------------------
 " Vim Plugin Configuration End
