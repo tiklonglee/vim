@@ -137,6 +137,7 @@ Plug 'Konfekt/FastFold'                  " compute folds in a better way
 " Various Support tools
 Plug 'tpope/vim-fugitive'                " Git support
 Plug 'tpope/vim-commentary'              " comment out code easily
+Plug 'ntpeters/vim-better-whitespace'    " trim trailing whitespace
 
 call plug#end()
 
