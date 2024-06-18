@@ -134,6 +134,9 @@ Plug 'bfrg/vim-cpp-modern'               " cpp highlight
 " Folds
 Plug 'Konfekt/FastFold'                  " compute folds in a better way
 
+" Various Support tools
+Plug 'tpope/vim-fugitive'                " Git support
+
 call plug#end()
 
 "----------------------------------------------------------------------
