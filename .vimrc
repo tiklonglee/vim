@@ -135,6 +135,7 @@ Plug 'Konfekt/FastFold'                  " compute folds in a better way
 
 " Various Support tools
 Plug 'tpope/vim-fugitive'                " Git support
+Plug 'tpope/vim-commentary'              " comment out code easily
 
 call plug#end()
 
@@ -239,6 +240,13 @@ autocmd FileType python setlocal foldmethod=indent
 " Map space to fold / unfold
 nnoremap <space> za
 nnoremap <S-space> zA
+
+"----------------------------------------------------------------------
+" Commentary
+"----------------------------------------------------------------------
+
+" change c,cpp comments string to one line version
+autocmd FileType c,cpp setlocal commentstring=//\ %s
 
 "----------------------------------------------------------------------
 " Vim Plugin Configuration End
