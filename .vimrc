@@ -139,6 +139,10 @@ Plug 'tpope/vim-fugitive'                " Git support
 Plug 'tpope/vim-commentary'              " comment out code easily
 Plug 'ntpeters/vim-better-whitespace'    " trim trailing whitespace
 
+" tmux
+Plug 'christoomey/vim-tmux-navigator'       " navigate tmux
+Plug 'RyanMillerC/better-vim-tmux-resizer'  " resize tmux
+
 call plug#end()
 
 "----------------------------------------------------------------------
@@ -249,6 +253,17 @@ nnoremap <S-space> zA
 
 " change c,cpp comments string to one line version
 autocmd FileType c,cpp setlocal commentstring=//\ %s
+
+"----------------------------------------------------------------------
+" tmux
+"----------------------------------------------------------------------
+
+" disable wrapping
+let g:tmux_navigator_no_wrap = 1
+
+" change resize count
+let g:tmux_resizer_resize_count = 5
+let g:tmux_resizer_vertical_resize_count = 5
 
 "----------------------------------------------------------------------
 " Vim Plugin Configuration End
